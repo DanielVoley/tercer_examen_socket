@@ -1,53 +1,59 @@
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { SocketService } from './socket.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styles: [`
-    .container {
-      text-align: center;
-    }
-  `]
+  styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit, OnDestroy {
+export class AppComponent {
   @ViewChild('canvaspizarra', { static: true }) canvas!: ElementRef<HTMLCanvasElement>;
-  
-  private context!: CanvasRenderingContext2D | null;
-  private drawing = false;
-  private lastX!: number;
-  private lastY!: number;
 
-  constructor(private socketService: SocketService) { }
+  private context!: CanvasRenderingContext2D | null;
+  private lastX: number = 0;
+  private lastY: number = 0;
+  private drawing: boolean = false;
+  public chatEnabled: boolean = false;
+  public username: string = '';
+  public chatMessages: string[] = [];
+  public chatMessage: string = '';
+
+
+
+  constructor(private socketService: SocketService) {}
+
 
   ngOnInit(): void {
-    this.socketService.connect();
     this.context = (this.canvas.nativeElement as HTMLCanvasElement).getContext('2d');
-
-    if (this.context) {
-      this.socketService.getDrawing().subscribe((data: any) => {
+    this.socketService.connect();
+    this.socketService.getDrawing().subscribe(data => {
+      if (data.action === 'draw') {
         this.drawOnCanvas(data.x, data.y);
-      });
-    }
+      } else if (data.action === 'clear') {
+        this.clearCanvas();
+      }
+    });
+    this.socketService.getChatMessage().subscribe((message: string) => {
+      this.chatMessages.push(message);
+    });
   }
 
-  ngOnDestroy(): void {
-    this.socketService.disconnect();
-  }
 
-  startDrawing(event: MouseEvent): void {
+
+  startDrawing(event: MouseEvent) {
     this.drawing = true;
-    this.lastX = event.pageX - (this.canvas.nativeElement.offsetLeft || 0);
-    this.lastY = event.pageY - (this.canvas.nativeElement.offsetTop || 0);
+    this.lastX = event.pageX - this.canvas.nativeElement.offsetLeft;
+    this.lastY = event.pageY - this.canvas.nativeElement.offsetTop;
   }
 
   draw(event: MouseEvent): void {
-    if (!this.drawing || !this.context) return;
-    const x = event.pageX - (this.canvas.nativeElement.offsetLeft || 0);
-    const y = event.pageY - (this.canvas.nativeElement.offsetTop || 0);
-
+    if (!this.drawing) return;
+    const x = event.pageX - this.canvas.nativeElement.offsetLeft;
+    const y = event.pageY - this.canvas.nativeElement.offsetTop;
     this.drawOnCanvas(x, y);
-    this.socketService.sendDrawing({ x, y });
+    this.socketService.sendDrawing({ action: 'draw', x, y });
+    this.lastX = x;
+    this.lastY = y;
   }
 
   endDrawing(): void {
@@ -59,8 +65,35 @@ export class AppComponent implements OnInit, OnDestroy {
     this.context.beginPath();
     this.context.moveTo(this.lastX, this.lastY);
     this.context.lineTo(x, y);
-    this.context.stroke();
-    this.lastX = x;
+    this.context.strokeStyle = '#000';
+    this.context.lineWidth = 2;
+        this.lastX = x;
     this.lastY = y;
+    this.context.stroke();
+  }
+
+  clearCanvas(): void {
+    this.context!.clearRect(0, 0, this.canvas.nativeElement.width, this.canvas.nativeElement.height);
+    this.socketService.sendDrawing({ action: 'clear' });
+  }
+
+  enableChat() {
+    if (this.username.trim() !== '') {
+
+      console.log('this.username');
+      console.log(this.username);
+      this.chatEnabled = true;
+      console.log('chatEnabled');
+      console.log(this.chatEnabled);
+    }
+  }
+
+  sendChatMessage() {
+    if (this.chatMessage.trim() !== '') {
+      const message = `${this.username}: ${this.chatMessage}`;
+      // const message = `${this.username}: ${this.chatMessage}`;
+      this.socketService.sendChatMessage(message);
+      this.chatMessage = '';
+    }
   }
 }
