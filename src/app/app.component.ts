@@ -106,4 +106,22 @@ export class AppComponent {
       this.chatMessage = '';
     }
   }
+
+
+  extractUsername(message: string): string {
+    const username = message.split(':')[0];
+    return username;
+  }
+
+  extractMessage(message: string): string {
+    const parts = message.split(':');
+    return parts.slice(1).join(':');
+  }
+
+  extractDateTime(message: string): string {
+    // Aquí debes obtener la fecha y hora del mensaje
+    // Puedes usar la función Date() para obtener la fecha y hora actual
+    const dateTime = new Date().toLocaleString();
+    return dateTime;
+  }
 }
