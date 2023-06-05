@@ -1,17 +1,24 @@
 const express = require('express');
 const http = require('http');
 const socketIO = require('socket.io');
+const { instrument } = require("@socket.io/admin-ui");
 
 const app = express();
 const server = http.createServer(app);
 const io = socketIO(server, {
   cors: {
-    origin: "http://localhost:4200",
+    origin: ["https://admin.socket.io","http://localhost:4200"],
     methods: ["GET", "POST"],
     allowedHeaders: ["my-custom-header"],
     credentials: true
   }
 });
+
+instrument(io, {
+  auth: false,
+  mode: "development",
+});
+
 
 // Manejo de conexiones de sockets
 io.on('connection', (socket) => {

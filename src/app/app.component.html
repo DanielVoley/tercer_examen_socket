@@ -28,7 +28,7 @@
   }
   </style>
 
-  <div class="container" >
+  <div class="containerss" >
     <div class="row">
       <div class="col-1"></div>
       <div class="col-12">
@@ -45,7 +45,8 @@
 
                       <!-- Agrega botones para unirse y abandonar la sala -->
                       <button class="btn btn-primary w-40 m-1" (click)="joinRoom()">Unirse</button>
-                      <button class="btn btn-warning w-40 m-1" (click)="leaveRoom()">Abandonar</button>
+                      <!-- <button class="btn btn-warning w-40 m-1" (click)="leaveRoom()">Abandonar</button> -->
+                      <a href="/" class="btn btn-warning">SALIR</a>
 
                   </div>
                 </div>
@@ -98,7 +99,7 @@
                         <!-- <canvas #canvas width="800" height="400" style="border: 4px solid rgb(60, 142, 177);" (mousedown)="startDrawing($event)" (mousemove)="draw($event)"
                         (mouseup)="endDrawing()" ></canvas> -->
                         <div class="canvas-container">
-                          <canvas #canvaspizarra style="border: 4px solid rgb(60, 142, 177);"  width="780" height="400" (mousedown)="startDrawing($event)" (mousemove)="draw($event)" (mouseup)="endDrawing()"></canvas>
+                          <canvas #canvaspizarra style="border: 4px solid rgb(60, 142, 177);"  width="530" height="400" (mousedown)="startDrawing($event)" (mousemove)="draw($event)" (mouseup)="endDrawing()"></canvas>
                         </div>
 
                         <br>
