@@ -3,12 +3,7 @@ import { SocketService } from './socket.service';
 
 @Component({
   selector: 'app-root',
-  template: `
-    <div class="container">
-      <h1>Whiteboard</h1>
-      <canvas #canvas width="800" height="600" (mousedown)="startDrawing($event)" (mousemove)="draw($event)" (mouseup)="endDrawing()"></canvas>
-    </div>
-  `,
+  templateUrl: './app.component.html',
   styles: [`
     .container {
       text-align: center;
@@ -16,7 +11,7 @@ import { SocketService } from './socket.service';
   `]
 })
 export class AppComponent implements OnInit, OnDestroy {
-  @ViewChild('canvas', { static: true }) canvas!: ElementRef<HTMLCanvasElement>;
+  @ViewChild('canvaspizarra', { static: true }) canvas!: ElementRef<HTMLCanvasElement>;
   
   private context!: CanvasRenderingContext2D | null;
   private drawing = false;
