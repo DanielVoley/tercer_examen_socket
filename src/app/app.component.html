@@ -47,7 +47,7 @@
                         <!-- <input class="form-control" type="text" id="room" [(ngModel)]="room" placeholder="Ingrese el nombre de la sala" /> -->
                       </div>
 
-                      <button class="btn btn-primary w-80 m-1" (click)="enableChat()">REGISTRARSE</button>
+                      <button class="btn btn-primary w-80 m-1" (click)="enableChat()"> <span *ngIf="!chatEnabled">REGISTRARSE</span> <span *ngIf="chatEnabled">CAMBIAR NOMBRE</span> </button>
                       <!-- <button class="btn btn-primary w-40 m-1" (click)="joinRoom()">Unirse</button>
                       <button class="btn btn-warning w-40 m-1" (click)="leaveRoom()">Abandonar</button> -->
 
@@ -57,7 +57,7 @@
 
                 <div class="col-md-8" style="text-align: left !important;">
                     <h5 class="card-title text-left">Clase Online</h5>
-                    <h4 class="card-title text-left">Bienvenido  <span class="text-primary" *ngIf="chatEnabled">{{username}}</span></h4>
+                    <h4 class="card-title text-left" *ngIf="chatEnabled">Bienvenido  <span class="text-primary">{{username}}</span></h4>
                     <p class="card-text">En este entorno virtual, exploraremos nuevas formas de interactuar y aprender. Aprovecharemos las herramientas digitales y las plataformas en línea para facilitar la comunicación, compartir recursos y trabajar en colaboración. Aunque los desafíos pueden ser diferentes, nuestra pasión por el conocimiento y el compromiso con el éxito académico siguen siendo los mismos.</p>
                 </div>
             </div>
@@ -115,7 +115,7 @@
                             </div>
                             <div class="col-md-10">
                               <div class="card-body m-0" style="padding: 2px;">
-                                <!-- <h6 class="card-title" sty>{{username}}</h6> -->
+                                <!-- <h6 class="card-title" sty>{{userchat}}</h6> -->
                                 <p class="card-text m-2" style="color: orange;">{{ message }}</p>
                                 <!-- <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p> -->
                               </div>

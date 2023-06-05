@@ -1,5 +1,7 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { SocketService } from './socket.service';
+import { CookieService } from 'ngx-cookie-service';
+
 
 @Component({
   selector: 'app-root',
@@ -20,10 +22,16 @@ export class AppComponent {
 
 
 
-  constructor(private socketService: SocketService) {}
+  constructor(private socketService: SocketService, private cookieService: CookieService) {}
 
 
   ngOnInit(): void {
+    const username = this.cookieService.get('username');
+    if (username) {
+      this.username = username;
+      this.chatEnabled = true;
+    }
+
     this.context = (this.canvas.nativeElement as HTMLCanvasElement).getContext('2d');
     this.socketService.connect();
     this.socketService.getDrawing().subscribe(data => {
@@ -85,6 +93,8 @@ export class AppComponent {
       this.chatEnabled = true;
       console.log('chatEnabled');
       console.log(this.chatEnabled);
+
+      this.cookieService.set('username', this.username);
     }
   }
 
