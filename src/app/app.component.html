@@ -36,6 +36,20 @@
           <img style="width: 100%; height: 300px;" src="https://static.vecteezy.com/system/resources/previews/002/294/192/non_2x/online-class-web-banner-design-free-vector.jpg" class="card-img-top" alt="...">
           <div class="card-body text-left">
             <div class="row">
+              <div class="col-md-12">
+                <div class="card">
+                  <div class="card-body">
+                      <h2>ÚNETE A UNA CLASE</h2>
+                      <!-- Agrega un campo de texto para ingresar el nombre de la sala -->
+                      <input class="form-control" type="text" id="room" [(ngModel)]="room" placeholder="Ingrese el nombre de la sala" />
+
+                      <!-- Agrega botones para unirse y abandonar la sala -->
+                      <button class="btn btn-primary w-40 m-1" (click)="joinRoom()">Unirse</button>
+                      <button class="btn btn-warning w-40 m-1" (click)="leaveRoom()">Abandonar</button>
+
+                  </div>
+                </div>
+              </div>
                 <div class="col-md-4">
                   <div class="card">
                     <div class="card-body" style="text-align: left !important;">
@@ -56,6 +70,7 @@
                 </div>
 
                 <div class="col-md-8" style="text-align: left !important;">
+                    <h3 class="text-primary text-center">{{room}}</h3>
                     <h5 class="card-title text-left">Clase Online</h5>
                     <h4 class="card-title text-left" *ngIf="chatEnabled">Bienvenido  <span class="text-primary">{{username}}</span></h4>
                     <p class="card-text">En este entorno virtual, exploraremos nuevas formas de interactuar y aprender. Aprovecharemos las herramientas digitales y las plataformas en línea para facilitar la comunicación, compartir recursos y trabajar en colaboración. Aunque los desafíos pueden ser diferentes, nuestra pasión por el conocimiento y el compromiso con el éxito académico siguen siendo los mismos.</p>

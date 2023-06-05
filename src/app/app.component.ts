@@ -20,6 +20,7 @@ export class AppComponent {
   public chatMessages: string[] = [];
   public chatMessage: string = '';
 
+  public room: string = '';
 
 
   constructor(private socketService: SocketService, private cookieService: CookieService) {}
@@ -46,6 +47,16 @@ export class AppComponent {
     });
   }
 
+  joinRoom() {
+    if (this.room.trim() !== '') {
+      this.socketService.joinRoom(this.room); // Llama al método joinRoom del servicio SocketService
+    }
+  }
+
+
+  leaveRoom() {
+    this.socketService.leaveRoom(); // Llama al método leaveRoom del servicio SocketService
+  }
 
 
   startDrawing(event: MouseEvent) {
@@ -108,13 +119,17 @@ export class AppComponent {
   }
 
 
-  extractUsername(message: string): string {
-    const username = message.split(':')[0];
+  extractUsername(message: any): string {
+    console.log('message');
+    console.log(message.message);
+    const username = message.message.split(':')[0];
     return username;
   }
 
-  extractMessage(message: string): string {
-    const parts = message.split(':');
+  extractMessage(message: any): string {
+    console.log('message222');
+    console.log(message);
+    const parts = message.message.split(':');
     return parts.slice(1).join(':');
   }
 
